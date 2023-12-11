@@ -76,5 +76,5 @@ DerivedDataCache/*
 # Content
 Content/
 
-# Source
-Source/
+# uproject file
+*.uproject

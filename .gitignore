@@ -1,3 +1,13 @@
+# Some example projects
+ContentExamples/
+LyraStarterGame/
+Resources/
+Tutorial/
+
+# no zip file
+*.zip
+*.rar
+
 # Visual Studio 2015 user specific files
 .vs/
 

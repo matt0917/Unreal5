@@ -3,6 +3,8 @@ ContentExamples/
 LyraStarterGame/
 Resources/
 Tutorial/
+TCAtlasEditor/
+StackOBot/
 
 # no zip file
 *.zip
@@ -88,3 +90,5 @@ Content/
 
 # uproject file
 *.uproject
+
+*.ddp

@@ -59,7 +59,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UParticleSystemComponent* Particles;
 
-	//사실상 springArm하고 MainCam이 모두 RootComponent > SprintArm > MainCam이런식으로 소속되어 있기때문에 UPROPERTY()로 2개를 정의하지 않더라도 모두 rootComponent에 자식들이므로, 엔진에서 안전하게 GC를 수행하므로, 2개에 대해 Uproperty를 선언하지 않아도 된다. 하지만 여기서는 그냥 연습하는김에 해봤다.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USpringArmComponent* SpringArm;
 

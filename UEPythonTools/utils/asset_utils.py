@@ -18,23 +18,30 @@ def create_folder_for_all_actors():
     unselect_all_actors()
     unreal.log("Done: Created folders for all actors")
 
+@undoable(name='Unfold selected Actors')
+def unfold_selected_actors_in_outliner():
+    unfold_actors_in_outliner(get_selected_actors())
+    unreal.log("Done: Unfold selected actors.")
+
 @undoable(name='Unfold all Actors')
-def unfold_actors_in_outliner():
+def unfold_all_actors_in_outliner():
+    unfold_actors_in_outliner(get_all_actors())
+    unreal.log("Done: Unfold all actors.")
+
+def unfold_actors_in_outliner(all_actors):
     '''move all actors out of folders in the world outliner'''
-    all_actors = get_all_actors()
     if not all_actors:
         return
     for actor in all_actors:
         actor.set_folder_path('/')
     unselect_all_actors()
-    unreal.log("Done: Unfold all actors.")
 
 def create_folder_for_actors(selected_actors=[]):
     if not selected_actors:
         unreal.log("No actors defined.")
     selected_actors_map = defaultdict(list)
     for actor in selected_actors:
-        selected_actors_map[actor.get_actor_label()] = actor
+        selected_actors_map[actor.get_actor_label()] = [actor, actor.get_folder_path()]
     # Check if there is at least one selected object
     if not selected_actors:
         unreal.log_warning("No objects selected.")
@@ -46,8 +53,9 @@ def create_folder_for_actors(selected_actors=[]):
     for foldername, actor_labels in grouped_strings.items():
         # unreal.log(f"Group based on '{foldername}': {actor_labels}")
         for actor_label in actor_labels:
-            actor = selected_actors_map[actor_label]
-            actor.set_folder_path(f'/{foldername}')
+            actor = selected_actors_map[actor_label][0]
+            actor_previous_folder = selected_actors_map[actor_label][1]
+            actor.set_folder_path(f'{actor_previous_folder}/{foldername}')
 
     subsystem = unreal.EditorActorSubsystem(name='SelectActor_ACtorSubsystem')
     subsystem.set_selected_level_actors(selected_actors)

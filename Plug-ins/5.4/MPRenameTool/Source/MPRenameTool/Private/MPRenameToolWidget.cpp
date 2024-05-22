@@ -1,10 +1,3 @@
-//******************************************************************************
-// File:        MPRenameWidget
-// Author:      Joonseo.Park
-// Date:        5/16/2024/Thu 1:47:22 AM
-// Description: 
-//******************************************************************************
-
 #include "MPRenameToolWidget.h"
 #include "LevelEditor.h"
 #include "Widgets/Docking/SDockTab.h"

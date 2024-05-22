@@ -22,7 +22,7 @@ void FMPRenameTool::StartupModule() {
     TSharedPtr<FMPRenameTool> SingletonInstance = FMPRenameTool::Get();
 
     FGlobalTabmanager::Get()->RegisterNomadTabSpawner(MPRenameToolTabName, FOnSpawnTab::CreateRaw(SingletonInstance.Get(), &FMPRenameTool::OnSpawnPluginTab))
-        .SetDisplayName(LOCTEXT("TabTitle", "MP RenameTool"))
+        .SetDisplayName(LOCTEXT("FMPRenameToolTabTitle", "MP RenameTool"))
         .SetMenuType(ETabSpawnerMenuType::Hidden);
 
     SingletonInstance->RenameToolWidget = SNew(MPRenameToolWidget); //SNew() returns TSharedPtr for Slate widgtes classes

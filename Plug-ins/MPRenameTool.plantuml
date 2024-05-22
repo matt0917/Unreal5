@@ -1,0 +1,41 @@
+@startuml
+
+package "MPRenameTool Plugin" {
+
+    class FMPRenameTool {
+        - Singleton : TSharedPtr<FMPRenameTool>
+        - RenameToolWidget : TSharedPtr<MPRenameToolWidget>
+        - RenameToolBL : TSharedPtr<MPRenameToolBL>
+        + Get() : TSharedPtr<MPRenameToolBL>
+        + StartupModule() : void
+        + ShutdownModule() : void
+        + RegisterMenus() : void
+        + AddMenuExtension(Builder : FMenuBarBuilder&) : void
+        + FillMenu(MenuBuilder : FMenuBuilder&) : void
+        + PluginButtonClicked() : void
+        + OnSpawnPluginTab(SpawnTabArgs : const FSpawnTabArgs&) : TSharedRef<SDockTab>
+        + RenameSelectedActors(NewBaseName : const FString&) : bool
+        + ReplaceTextForSelectedActors(OldText : const FString&, NewText : const FString&) : bool
+    }
+
+    class MPRenameToolWidget {
+        - RenameInputTextBox : TSharedPtr<SEditableTextBox>
+        - OldTextBox : TSharedPtr<SEditableTextBox>
+        - NewTextBox : TSharedPtr<SEditableTextBox>
+        - TabSize : FVector2D
+        + Construct(InArgs : const FArguments&) : void
+        + SpawnTab() : TSharedRef<SDockTab>
+        + OnRenameButtonClicked() : FReply
+        + OnReplaceButtonClicked() : FReply
+    }
+
+    class MPRenameToolBL {
+        + RenameSelectedActors(NewBaseName : const FString&) : bool
+        + ReplaceTextForSelectedActors(OldText : const FString&, NewText : const FString&) : bool
+    }
+
+    FMPRenameTool "1" --> "1" MPRenameToolWidget : uses(Association)
+    FMPRenameTool "1" --> "1" MPRenameToolBL : uses(Association)
+}
+
+@enduml

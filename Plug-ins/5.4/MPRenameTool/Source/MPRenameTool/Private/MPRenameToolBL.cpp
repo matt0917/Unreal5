@@ -27,7 +27,7 @@ bool MPRenameToolBL::RenameSelectedActors(const FString& NewBaseName) const {
             if (TObjectPtr<AActor> Actor = Cast<AActor>(*It)) {
                 const FString NewName = FString::Printf(TEXT("%s%0*d"), *NewBaseName, PaddingDigits, Index);
                 Actor->Modify(); // Mark the actor as modified for undo
-                Actor->SetActorLabel(NewName, true);
+                Actor->SetActorLabel(NewName);
                 Index++;
             }
         }
@@ -59,7 +59,7 @@ bool MPRenameToolBL::ReplaceTextForSelectedActors(const FString& OldText, const 
 
                     // Mark the actor as modified for undo
                     Actor->Modify();
-                    Actor->SetActorLabel(NewName, true);
+                    Actor->SetActorLabel(NewName);
 
                     // Increment replaced count
                     ReplacedCount++;

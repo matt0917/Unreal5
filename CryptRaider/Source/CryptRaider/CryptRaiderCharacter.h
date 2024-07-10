@@ -49,6 +49,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attach")
+	FName PropAttachPoint;
+
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);

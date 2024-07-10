@@ -14,7 +14,8 @@ public:
     virtual void ShutdownModule() override;
     void PluginButtonClicked();
     TSharedRef<SDockTab> OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs);
-    bool RenameSelectedActors(const FString& NewName) const;
+    bool AddPrefixAndSuffixToActors(const FString& PrefixText, const FString& SuffixText, const FString& separator);
+    bool RenameSelectedActors(const FString& NewName, const FString& PrefixText, const FString& SuffixText) const;
     bool ReplaceTextForSelectedActors(const FString& OldText, const FString& NewText) const;
 
 private:

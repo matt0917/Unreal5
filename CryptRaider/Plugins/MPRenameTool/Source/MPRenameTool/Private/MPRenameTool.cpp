@@ -80,9 +80,19 @@ TSharedRef<SDockTab> FMPRenameTool::OnSpawnPluginTab(const FSpawnTabArgs& SpawnT
     }
 }
 
-bool FMPRenameTool::RenameSelectedActors(const FString& NewBaseName) const {
+bool FMPRenameTool::AddPrefixAndSuffixToActors(const FString& PrefixText, const FString& SuffixText, const FString& separator) {
     if (RenameToolBL.IsValid()) {
-        return RenameToolBL->RenameSelectedActors(NewBaseName);
+        return RenameToolBL->AddPrefixAndSuffixToActors(PrefixText, SuffixText, separator);
+    }
+    else {
+        UE_LOG(LogTemp, Error, TEXT("Add Prefix/Suffix to Actor(s) logic is not valid"));
+        return false;
+    }
+}
+
+bool FMPRenameTool::RenameSelectedActors(const FString& NewBaseName, const FString& PrefixText, const FString& SuffixText) const {
+    if (RenameToolBL.IsValid()) {
+        return RenameToolBL->RenameSelectedActors(NewBaseName, PrefixText, SuffixText);
     }
     else {
         UE_LOG(LogTemp, Error, TEXT("Rename Actor(s) logic is not valid"));

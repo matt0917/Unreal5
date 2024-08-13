@@ -23,9 +23,20 @@ protected:
 	virtual void BeginPlay();
 
 public:
-	UPROPERTY(EditAnywhere, Category="Custom Properties")
+	UPROPERTY(EditAnywhere, Category="Combat")
 	float LookAtDistanceRange;
+
+	UPROPERTY(EditDefaultsOnly, Category="Combat")
+	float FireRange;
 
 private:
 	TObjectPtr<class ATank> Tank;
+
+	FTimerHandle FireRateTimerHandle;
+
+	float FireRate;
+
+	void CheckFireCondition();
+
+	bool InActionRange(const float& DistanceRange);
 };

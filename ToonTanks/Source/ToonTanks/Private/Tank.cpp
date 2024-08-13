@@ -72,7 +72,11 @@ void ATank::Move(const FInputActionValue& Value){
 	}
 }
 
-void ATank::Fire(const FInputActionValue& Value) {
+void ATank::Fire(const FInputActionValue& Value) 
+{
+	if (Value.IsNonZero()){
+		FireCannon();
+	}
 }
 
 void ATank::RotateTurretByKey(const FInputActionValue& Value) {
@@ -87,15 +91,6 @@ void ATank::Tick(float DeltaTime)
 		PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,
 			false,
 			HitResult);
-
-		DrawDebugSphere(
-			GetWorld(),
-			HitResult.ImpactPoint,
-			25.f,
-			12,
-			FColor::Red,
-			false,
-			-1.f);
 
 		RotateTurret(HitResult.ImpactPoint);
 	}

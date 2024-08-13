@@ -58,7 +58,7 @@ protected:
 	void Move(const FInputActionValue& Value);
 	
 	UFUNCTION()
-	void Fire(const FInputActionValue& Value);
+	virtual void Fire(const FInputActionValue& Value);
 
 	UFUNCTION()
 	void RotateTurretByKey(const FInputActionValue& Value);

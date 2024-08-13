@@ -5,7 +5,7 @@
 
 
 UOverlapTriggerBoxComponent::UOverlapTriggerBoxComponent()
-	:AcceptableTag(FName(TEXT("OverlapProp")))
+	:AcceptableTag(FName(TEXT("OverlapProp"))), TimeElapsed(0.f)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -28,14 +28,18 @@ void UOverlapTriggerBoxComponent::TickComponent(float DeltaTime, ELevelTick Tick
 		//GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Green, TEXT("Unlocking"));
 		UPrimitiveComponent* ActorRootComponent = Cast<UPrimitiveComponent>(Actor->GetRootComponent());
 		if (ActorRootComponent != nullptr){
-			ActorRootComponent->SetSimulatePhysics(false);
+			Mover->SetShouldMove(true);
+			TimeElapsed += DeltaTime;
+			if (TimeElapsed > Mover->DelayTime) {
+				ActorRootComponent->SetSimulatePhysics(false);
+				Actor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+			}
 		}
-		Actor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
-		Mover->SetShouldMove(true);
 	}
 	else{
 		//GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Green, TEXT("Relocking"));
 		Mover->SetShouldMove(false);
+		TimeElapsed = 0.f;
 	}
 }
 

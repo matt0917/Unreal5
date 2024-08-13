@@ -30,6 +30,8 @@ private:
 
 	UMover* Mover;
 
+	float TimeElapsed;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetMover(UMover* Mover);

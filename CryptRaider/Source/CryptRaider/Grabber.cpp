@@ -94,10 +94,26 @@ void UGrabber::Grab(const FInputActionValue& Value){
 		bool HasHit = GetGrabbableToReach(HitResult);
 
 		if (HasHit) {
-			const FString& actorLabel = HitResult.GetActor()->GetActorNameOrLabel();
+			AActor* Actor = HitResult.GetActor();
+			const FString& actorLabel = Actor->GetActorNameOrLabel();
 			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, actorLabel);
 
+			// Make sure actor is detached from any other actor rootcomponent such as overlapped actor
+			if (Actor->GetAttachParentActor() != nullptr){
+				Actor->Tags[0] = FName("NoTag");
+				Actor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+				GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, TEXT("Get simulation Back"));
+			} else {
+				if (Actor->Tags[0] == FName("NoTag")){
+					Actor->Tags[0] = FName("OverlapProp");
+				}
+			}
+
 			UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+			// set physics back again if it was removed from a previous event with other overlapped actor moving together.
+			if (!HitComponent->IsSimulatingPhysics()){
+				HitComponent->SetSimulatePhysics(true);
+			}
 			PhysicsHandle->GrabComponentAtLocationWithRotation(
 				HitComponent,
 				NAME_None,

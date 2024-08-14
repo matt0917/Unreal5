@@ -44,11 +44,11 @@ void ATower::CheckFireCondition()
 	{
 		FireCannon();
 	}
-}
+}  
 
 bool ATower::InActionRange(const float& DistanceRange) {
 	float Distance = FVector::Dist(GetActorLocation(), Tank->GetActorLocation());
-	if (Distance <= FireRange){
+	if (Distance <= DistanceRange){
 		return true;
 	}
 	return false;

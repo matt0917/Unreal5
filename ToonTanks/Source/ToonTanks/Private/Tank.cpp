@@ -43,11 +43,13 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATank::Move);
 	}
 	if (TObjectPtr<UEnhancedInputComponent> Input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
-		Input->BindAction(FireAction, ETriggerEvent::Triggered, this, &ATank::Fire);
+		Input->BindAction(FireAction, ETriggerEvent::Started, this, &ATank::Fire);
 	}
 	if (TObjectPtr<UEnhancedInputComponent> Input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 		Input->BindAction(RotateTurretAction, ETriggerEvent::Triggered, this, &ATank::RotateTurretByKey);
 	}
+
+	
 }
 
 void ATank::Move(const FInputActionValue& Value){
@@ -74,10 +76,10 @@ void ATank::Move(const FInputActionValue& Value){
 
 void ATank::Fire(const FInputActionValue& Value) 
 {
-	if (Value.IsNonZero()){
+	if (Value.Get<float>() > 0.1f){
 		FireCannon();
 	}
-}
+} 
 
 void ATank::RotateTurretByKey(const FInputActionValue& Value) {
 }

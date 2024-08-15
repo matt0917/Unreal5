@@ -25,9 +25,9 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (PlayerController = Cast<APlayerController>(GetController()))
+	if (TankPlayerController = Cast<APlayerController>(GetController()))
 	{
-		TObjectPtr<UEnhancedInputLocalPlayerSubsystem> Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+		TObjectPtr<UEnhancedInputLocalPlayerSubsystem> Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(TankPlayerController->GetLocalPlayer());
 		if (Subsystem){
 			Subsystem->AddMappingContext(DefaultInputMappingContext, 0);
 		}
@@ -88,13 +88,25 @@ void ATank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (PlayerController){
+	if (TankPlayerController){
 		FHitResult HitResult;
-		PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,
+		TankPlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,
 			false,
 			HitResult);
 
 		RotateTurret(HitResult.ImpactPoint);
 	}
+}
+
+void ATank::HandleDestruction()
+{
+	Super::HandleDestruction();
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+}
+
+APlayerController* ATank::GetTankPlayerController() const 
+{
+	return TankPlayerController;
 }
 

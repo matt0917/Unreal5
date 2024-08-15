@@ -50,7 +50,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enhanced Input", meta=(AllowPrivateAccess="true"));
 	TObjectPtr<UInputAction> FireAction;
 
-	TObjectPtr<APlayerController> PlayerController;
+	TObjectPtr<APlayerController> TankPlayerController;
 
 protected:
 	//Functions for input actions
@@ -68,4 +68,8 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void HandleDestruction() override;
+
+	APlayerController* GetTankPlayerController() const;
 };

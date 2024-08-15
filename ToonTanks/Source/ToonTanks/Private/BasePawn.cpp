@@ -51,6 +51,11 @@ void ABasePawn::FireCannon()
 	Projectile->SetOwner(this);
 }
 
+void ABasePawn::HandleDestruction()
+{
+	// TODO: Visual/sound effects
+}
+
 
 
 

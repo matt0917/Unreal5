@@ -12,7 +12,7 @@
 
 
 ATank::ATank()
-	:TurnRate(45.f)
+	:TurnRate(45.f), bAlive(true)
 {
 	MainCameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("MainCamera SpringArm"));
 	MainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Main Camera"));
@@ -103,6 +103,7 @@ void ATank::HandleDestruction()
 	Super::HandleDestruction();
 	SetActorHiddenInGame(true);
 	SetActorTickEnabled(false);
+	bAlive = false;
 }
 
 APlayerController* ATank::GetTankPlayerController() const 

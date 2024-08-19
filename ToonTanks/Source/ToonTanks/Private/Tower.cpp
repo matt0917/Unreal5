@@ -46,7 +46,10 @@ void ATower::HandleDestruction()
 
 void ATower::CheckFireCondition() 
 {
-	if (Tank && InActionRange(FireRange))
+	if(Tank == nullptr){
+		return;
+	}
+	if(Tank && Tank->bAlive && InActionRange(FireRange))
 	{
 		FireCannon();
 	}

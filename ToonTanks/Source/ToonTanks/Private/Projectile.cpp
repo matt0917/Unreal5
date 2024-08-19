@@ -8,6 +8,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Sound/SoundBase.h"
+#include "ToonTanksPlayerController.h"
 
 
 
@@ -31,12 +33,15 @@ AProjectile::AProjectile()
 	SmokeTrail->SetupAttachment(RootComponent);
 }
 
-// Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+	// Launch Sound when projectile actor starts playing
+	if (LaunchSound){
+		UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
+	}
 }
 
 // Called every frame
@@ -48,14 +53,14 @@ void AProjectile::Tick(float DeltaTime)
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) 
 {
-	auto MyOwner = GetOwner();
+	AActor* MyOwner = GetOwner();
 	if (MyOwner == nullptr){
 		Destroy();
 		return;
 	}
 
-	auto MyOwnerInstigator = MyOwner->GetInstigatorController();
-	auto MyDamageTypeClass = UDamageType::StaticClass();
+	AController* MyOwnerInstigator = MyOwner->GetInstigatorController();
+	UClass* MyDamageTypeClass = UDamageType::StaticClass();
 
 	if(OtherActor && OtherActor != this && OtherActor != MyOwner){
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyOwnerInstigator, this, MyDamageTypeClass);
@@ -67,6 +72,19 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 			GetActorLocation(),
 			GetActorRotation()
 		);
+	}
+	if (HitSound) {
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			HitSound,
+			GetActorLocation()
+		);
+	}
+	if (HitCameraShakeClass) {
+		AToonTanksPlayerController* GamePlayerController = GetWorld()->GetFirstPlayerController<AToonTanksPlayerController>();
+		if (GamePlayerController){
+			GamePlayerController->ClientStartCameraShake(HitCameraShakeClass);
+		}
 	}
 	Destroy();
 

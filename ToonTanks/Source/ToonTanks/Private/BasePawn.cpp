@@ -7,7 +7,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Sound/SoundBase.h"
 #include "projectile.h"
+#include "ToonTanksPlayerController.h"
 
 
 
@@ -62,6 +64,23 @@ void ABasePawn::HandleDestruction()
 			GetActorLocation(),
 			GetActorRotation()
 		);
+	}
+
+	if (DeathSound){
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			DeathSound,
+			GetActorLocation()
+		);
+	}
+
+	if (DeathCameraShakeClass){
+		AToonTanksPlayerController* GamePlayerController = GetWorld()->GetFirstPlayerController<AToonTanksPlayerController>();
+		if (GamePlayerController){
+			GamePlayerController->ClientStartCameraShake(
+				DeathCameraShakeClass
+			);
+		}
 	}
 }
 

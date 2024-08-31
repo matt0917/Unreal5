@@ -97,3 +97,6 @@ Content/
 
 #images
 *.png
+
+#UIMaterialLab Resource
+/UIMaterialLab/

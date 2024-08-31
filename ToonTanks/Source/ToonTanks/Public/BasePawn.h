@@ -57,4 +57,7 @@ protected:
 
 public:
 	virtual void HandleDestruction();
+
+	UPROPERTY(EditAnywhere, Category="Health")
+	float DamageRatio;
 };

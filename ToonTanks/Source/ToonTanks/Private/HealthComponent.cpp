@@ -5,6 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 #include "ToonTanksGameMode.h"
+#include "BasePawn.h"
 
 
 // Sets default values for this component's properties
@@ -46,7 +47,7 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* Instigator, AActor* DamageCauser) 
 {
 	//UE_LOG(LogTemp, Warning, TEXT("GameMode: %s"), *ToonTankGameMode->GetName());
-	Health -= Damage;
+	Health -= (Damage * Cast<ABasePawn>(DamagedActor)->DamageRatio);
 	//UE_LOG(LogTemp, Warning, TEXT("Health: %.2f"), Health);
 	if (Health <= 0.f && ToonTankGameMode){
 		ToonTankGameMode->ActorDied(DamagedActor);

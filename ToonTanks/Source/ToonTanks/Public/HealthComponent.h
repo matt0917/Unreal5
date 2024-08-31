@@ -24,8 +24,6 @@ private:
 	UPROPERTY(EditAnywhere, Category="Setup")
 	float MaxHealth;
 
-	float Health;
-
 	UFUNCTION()
 	void DamageTaken(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* Instigator, AActor* DamageCauser);
 
@@ -34,5 +32,8 @@ private:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Health")
+	float Health;
 
 };

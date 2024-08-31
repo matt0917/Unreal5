@@ -38,9 +38,6 @@ private:
 		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	UPROPERTY(EditAnywhere, Category="Combat")
-	float Damage;
-
-	UPROPERTY(EditAnywhere, Category="Combat")
 	class UParticleSystem* HitParticles;
 
 	UPROPERTY(EditAnywhere, Category="Combat")
@@ -54,4 +51,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TSubclassOf<class UCameraShakeBase> HitCameraShakeClass;
+
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="Combat")
+	float Damage;
 };

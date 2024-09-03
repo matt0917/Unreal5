@@ -62,31 +62,31 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	AController* MyOwnerInstigator = MyOwner->GetInstigatorController();
 	UClass* MyDamageTypeClass = UDamageType::StaticClass();
 
-	if(OtherActor && OtherActor != this && OtherActor != MyOwner){
+	if(OtherActor && OtherActor != this && OtherActor != MyOwner) {
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyOwnerInstigator, this, MyDamageTypeClass);
 
-	if (HitParticles){
-		UGameplayStatics::SpawnEmitterAtLocation(
-			this,
-			HitParticles, 
-			GetActorLocation(),
-			GetActorRotation()
-		);
-	}
-	if (HitSound) {
-		UGameplayStatics::PlaySoundAtLocation(
-			this,
-			HitSound,
-			GetActorLocation()
-		);
-	}
-	if (HitCameraShakeClass) {
-		AToonTanksPlayerController* GamePlayerController = GetWorld()->GetFirstPlayerController<AToonTanksPlayerController>();
-		if (GamePlayerController){
-			GamePlayerController->ClientStartCameraShake(HitCameraShakeClass);
+		if (HitParticles){
+			UGameplayStatics::SpawnEmitterAtLocation(
+				this,
+				HitParticles, 
+				GetActorLocation(),
+				GetActorRotation()
+			);
 		}
-	}
-	Destroy();
+		if (HitSound) {
+			UGameplayStatics::PlaySoundAtLocation(
+				this,
+				HitSound,
+				GetActorLocation()
+			);
+		}
+		if (HitCameraShakeClass) {
+			AToonTanksPlayerController* GamePlayerController = GetWorld()->GetFirstPlayerController<AToonTanksPlayerController>();
+			if (GamePlayerController){
+				GamePlayerController->ClientStartCameraShake(HitCameraShakeClass);
+			}
+		}
+		Destroy();
 
 	}
 }	

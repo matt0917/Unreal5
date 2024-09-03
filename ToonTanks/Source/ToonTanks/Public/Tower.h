@@ -22,14 +22,20 @@ public:
 	virtual void HandleDestruction() override;
 
 protected:
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 
 public:
 	UPROPERTY(EditAnywhere, Category="Combat")
 	float LookAtDistanceRange;
 
+	UPROPERTY(EditAnywhere, Category ="UI")
+	float ShowHealthDistanceRange;
+
 	UPROPERTY(EditDefaultsOnly, Category="Combat")
 	float FireRange;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
+	class UWidgetComponent* HealthBar;
 
 private:
 	TObjectPtr<class ATank> Tank;
@@ -41,4 +47,6 @@ private:
 	void CheckFireCondition();
 
 	bool InActionRange(const float& DistanceRange);
+
+	void RotateWidgetToTarget(UWidgetComponent* Widget, const FRotator& Rotator);
 };

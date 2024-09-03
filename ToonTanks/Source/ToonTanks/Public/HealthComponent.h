@@ -29,11 +29,18 @@ private:
 
 	class AToonTanksGameMode* ToonTankGameMode;
 
+	float TargetHealth;
+
+	float InterpSpeed;
+
+	UPROPERTY(EditAnywhere, Category="Health")
+	float MinHealthThreshold;
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Health")
-	float Health;
+	float CurrentHealth;
 
 };

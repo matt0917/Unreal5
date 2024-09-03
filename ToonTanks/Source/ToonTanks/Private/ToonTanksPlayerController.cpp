@@ -8,10 +8,10 @@
 void AToonTanksPlayerController::SetPlayerEnabledState(bool bPlayerEnabled) 
 {
 	// Set mouse cursor visible while the tank is alive
+	bShowMouseCursor = true;
 	if (bPlayerEnabled){
 		GetPawn()->EnableInput(this);
 	} else {
 		GetPawn()->DisableInput(this);
 	}
-	bShowMouseCursor = bPlayerEnabled;
 }

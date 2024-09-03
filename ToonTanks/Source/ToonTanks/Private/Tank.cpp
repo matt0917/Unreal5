@@ -19,8 +19,6 @@ ATank::ATank()
 
 	MainCameraSpringArm->SetupAttachment(RootComponent);
 	MainCamera->SetupAttachment(MainCameraSpringArm);
-
-	DamageRatio = 0.1f;
 }
 
 void ATank::BeginPlay() 

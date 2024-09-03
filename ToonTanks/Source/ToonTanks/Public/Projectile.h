@@ -52,7 +52,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TSubclassOf<class UCameraShakeBase> HitCameraShakeClass;
 
-public:
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="Combat")
+	UPROPERTY(EditAnywhere, Category="Combat")
 	float Damage;
+
 };

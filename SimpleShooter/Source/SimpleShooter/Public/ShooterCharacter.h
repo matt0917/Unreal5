@@ -11,9 +11,12 @@ class UInputAction;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
+class AGun;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogShooterCharacter, Log, All);
+
+
 
 UCLASS(config=Game)
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
@@ -68,4 +71,30 @@ private:
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
+
+	UPROPERTY(EditDefaultsOnly, Category="Gun", meta = (DisplayPriority = 1))
+	TArray< TSubclassOf<AGun> > GunClasses;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SwitchWeaponLeftAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SwitchWeaponRightAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ShootAction;
+
+	UPROPERTY()
+	AGun* Gun;
+
+	TArray<AGun*> SpawnedGuns;
+
+	void SwitchLeft();
+	void SwitchRight();
+	void SwitchWeapon(int32 Direction);
+	void Shoot();
+
+public:
+	UPROPERTY(EditAnywhere, Category="Gun", meta = (DisplayPriority = 1))
+	int32 WeaponIndex;
 };

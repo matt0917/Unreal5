@@ -49,13 +49,19 @@ protected:
 	FName MuzzleSocketName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX")
-	class UParticleSystem* MuzzleFlashFX;
+	class UParticleSystem* MuzzleFlashFx;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX")
+	class UParticleSystem* ImpactFx;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SFX")
-	class USoundBase* MuzzeleFlashSFX;
+	class USoundBase* MuzzeleFlashSfx;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX")
 	float MaxRange;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float Damage;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category="Weapon", meta = (DisplayPriority = 1))

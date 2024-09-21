@@ -13,6 +13,8 @@
 #include "InputActionValue.h"
 #include "Math/UnrealMathUtility.h"
 #include "Gun.h"
+#include "TimerManager.h"
+//#include "ShooterAIController.h"
 
 
 
@@ -20,7 +22,7 @@ DEFINE_LOG_CATEGORY(LogShooterCharacter);
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
-	:WeaponIndex(0)
+	:WeaponIndex(0), DamageRatio(1.f), bDead(false)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -74,6 +76,7 @@ void AShooterCharacter::BeginPlay()
 		}
 	}
 	SwitchWeapon(0);
+	GetMesh()->HideBoneByName(TEXT("weapon_R"), EPhysBodyOp::PBO_None);
 }
 
 // Called every frame
@@ -146,7 +149,7 @@ void AShooterCharacter::SwitchWeapon(int32 Direction) {
 				SpawnedGuns.Add(Gun);
 			}
 		}
-
+		
 		// Attach the weapon to the player's mesh
 		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("weapon_r_new"));
 		Gun->SetOwner(this);
@@ -190,9 +193,43 @@ void AShooterCharacter::Look(const FInputActionValue& Value)
 
 void AShooterCharacter::Shoot()
 {
-	FString shoot = "shoot";
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("IsAttacking: %s"), *shoot));
+	//FString shoot = "shoot";
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("IsAttacking: %s"), *shoot));
 	if(Gun){
 		Gun->PullTrigger();
 	}
+}
+
+void AShooterCharacter::HandleDestruction() {
+	bDead = true;
+	// disable all collision attached to the current character
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Destroy after finishing animation approx 5sec
+	// TODO: use notify
+	GetWorld()->GetTimerManager().SetTimer(
+		GunDestroyTimerHandle,
+		this,
+		&AShooterCharacter::DestroyAllGuns,
+		4.9f,  // time of ending animation
+		false
+	);
+}
+
+bool AShooterCharacter::IsDead() const {
+	return bDead;
+}
+
+void AShooterCharacter::DestroyAllGuns() {
+	// safely destroy elements in the array
+	for (AGun* _gun : SpawnedGuns){
+		if (_gun){
+			_gun->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);  // Detach from the character
+			//_gun->SetActorHiddenInGame(true);
+			GEngine->AddOnScreenDebugMessage(-1, 7.f, FColor::Yellow, FString::Printf(TEXT("GunName: %s"), *_gun->GetActorNameOrLabel()));
+			_gun->Destroy();
+		}
+	}
+	SpawnedGuns.Empty();
 }

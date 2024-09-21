@@ -17,7 +17,7 @@ void ARifle::Tick(float DeltaTime)
 void ARifle::PullTrigger()
 {
 	Super::PullTrigger();
-	if(MuzzleFlashFX){
+	if(MuzzleFlashFx){
 		RunVfx();
 	}
 }
@@ -25,7 +25,7 @@ void ARifle::PullTrigger()
 void ARifle::RunVfx() 
 {
 	if (MuzzleSocketName.IsNone()) { return; }
-	UGameplayStatics::SpawnEmitterAttached(MuzzleFlashFX, Mesh, MuzzleSocketName);
+	UGameplayStatics::SpawnEmitterAttached(MuzzleFlashFx, Mesh, MuzzleSocketName);
 }
 
 void ARifle::RunSfx() {}

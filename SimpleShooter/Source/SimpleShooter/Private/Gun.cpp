@@ -7,10 +7,13 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/Pawn.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/DamageEvents.h"
+
 
 // Sets default values
 AGun::AGun()
-	:WeaponType(EWeaponType::Medium), MaxRange(2000.f)
+	:WeaponType(EWeaponType::Medium), MaxRange(2000.f), Damage(1.f)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -65,13 +68,20 @@ void AGun::PullTrigger()
 	);
 	if (!bHit) { return; }
 
-	if (HitResult.GetActor()){
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Hit on: %s"), *HitResult.GetActor()->GetActorNameOrLabel()));
+
+	if (ImpactFx){
+		FVector HitFacingDirection = -StartRotation.Vector();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFx, HitResult.Location, HitFacingDirection.Rotation());
+		FPointDamageEvent DamageEvent(Damage, HitResult, HitFacingDirection, nullptr);
+		if (AActor* HitActor = HitResult.GetActor()){
+			HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Hit on: %s"), *HitResult.GetActor()->GetActorNameOrLabel()));
+		}
 	}
 
-	DrawDebugPoint(
-		GetWorld(), HitResult.Location,
-		20, FColor::Red, false, 1.f);
+	//DrawDebugPoint(
+	//	GetWorld(), HitResult.Location,
+	//	20, FColor::Red, false, 1.f);
 	
 }
 

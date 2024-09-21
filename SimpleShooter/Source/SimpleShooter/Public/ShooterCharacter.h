@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "ShooterCharacter.generated.h"
 
+
 class UInputAction;
 class USpringArmComponent;
 class UCameraComponent;
@@ -84,8 +85,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* ShootAction;
 
-	UPROPERTY()
-	AGun* Gun;
 
 	TArray<AGun*> SpawnedGuns;
 
@@ -94,7 +93,28 @@ private:
 	void SwitchWeapon(int32 Direction);
 	void Shoot();
 
+protected:
+	UPROPERTY()
+	AGun* Gun;
+
+	bool bDead;
+
 public:
 	UPROPERTY(EditAnywhere, Category="Gun", meta = (DisplayPriority = 1))
 	int32 WeaponIndex;
+
+	UPROPERTY(EditAnywhere, Category = "Health")
+	float DamageRatio;
+
+	UFUNCTION()
+	virtual void HandleDestruction();
+
+	//Make callable in bluerprint and make this pure function
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsDead() const;
+
+private:
+	void DestroyAllGuns();
+
+	struct FTimerHandle GunDestroyTimerHandle;
 };
